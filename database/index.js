@@ -1,33 +1,37 @@
 const { Client } = require("pg");
+const UsersTable = require("./users.table");
+const PostsTable = require("./posts.table");
 
 const client = new Client("postgres://localhost:5432/juicebox-dev");
 
-async function getAllUsers() {
-  const { rows } = await client.query(
-    `SELECT id, username 
-      FROM users;
-    `
-  );
+const users = new UsersTable(client);
+const postsTable = new PostsTable(client);
 
-  return rows;
-}
-
-async function createUser({ username, password }) {
+getUserById = async function (userId) {
   try {
-    const { rows } = await client.query(
-      `
-      INSERT INTO users(username, password) 
-      VALUES($1, $2) 
-      ON CONFLICT (username) DO NOTHING 
-      RETURNING *;
-    `,
-      [username, password]
-    );
+    const {
+      rows: [user],
+    } = await client.query(`
+        SELECT * FROM users
+        WHERE "id"=${userId};
+      `);
 
-    return rows;
+    if (!user) return null;
+
+    delete user.password;
+
+    const userPosts = await postsTable.getPostsByUser(userId);
+    user["posts"] = userPosts;
+
+    return user;
   } catch (error) {
     throw error;
   }
-}
+};
 
-module.exports = { client, getAllUsers, createUser };
+module.exports = {
+  client,
+  usersTable: users,
+  postsTable,
+  getUserById,
+};
