@@ -1,4 +1,4 @@
-const { client, usersTable } = require("../index");
+const { client, usersDbModel } = require("../index");
 
 async function dropTable() {
   await client.query(`
@@ -20,21 +20,21 @@ async function createTable() {
 }
 
 async function createInitialData() {
-  const albert = await usersTable.createUser({
+  const albert = await usersDbModel.create({
     username: "albert",
     password: "bertie99",
     name: "Albert Malatamban",
     location: "San Luis Obispo",
   });
 
-  const sandra = await usersTable.createUser({
+  const sandra = await usersDbModel.create({
     username: "sandra",
     password: "cheeky339",
     name: "Sandy Cheeks",
     location: "Bikini Bottom",
   });
 
-  const glamgal = await usersTable.createUser({
+  const glamgal = await usersDbModel.create({
     username: "glamgal",
     password: "glamglams",
     name: "Rhonda Regular",

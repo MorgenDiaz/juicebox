@@ -1,37 +1,29 @@
 const { Client } = require("pg");
-const UsersTable = require("./users.table");
-const PostsTable = require("./posts.table");
+const UsersTable = require("./table/users.table");
+const PostsTable = require("./table/posts.table");
+const TagsTable = require("./table/tags.table");
+const PostTagsTable = require("./table/post_tags.table");
+const PostsDbModel = require("./model/posts.db.model");
+const UsersDbModel = require("./model/users.db.model");
 
 const client = new Client("postgres://localhost:5432/juicebox-dev");
 
-const users = new UsersTable(client);
+const usersTable = new UsersTable(client);
 const postsTable = new PostsTable(client);
+const tagsTable = new TagsTable(client);
+const postTagsTable = new PostTagsTable(client);
 
-getUserById = async function (userId) {
-  try {
-    const {
-      rows: [user],
-    } = await client.query(`
-        SELECT * FROM users
-        WHERE "id"=${userId};
-      `);
+const postsDbModel = new PostsDbModel(
+  postsTable,
+  tagsTable,
+  postTagsTable,
+  usersTable
+);
 
-    if (!user) return null;
-
-    delete user.password;
-
-    const userPosts = await postsTable.getPostsByUser(userId);
-    user["posts"] = userPosts;
-
-    return user;
-  } catch (error) {
-    throw error;
-  }
-};
+const usersDbModel = new UsersDbModel(usersTable, postsTable, tagsTable);
 
 module.exports = {
   client,
-  usersTable: users,
-  postsTable,
-  getUserById,
+  postsDbModel,
+  usersDbModel,
 };

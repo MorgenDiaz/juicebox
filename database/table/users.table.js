@@ -13,7 +13,7 @@ class UsersTable {
     return rows;
   };
 
-  createUser = async function ({ username, password, name, location }) {
+  createUser = async function (username, password, name, location) {
     try {
       const {
         rows: [user],
@@ -33,7 +33,7 @@ class UsersTable {
     }
   };
 
-  updateUser = async function (id, fields = {}) {
+  updateUser = async function (id, fields) {
     const setString = Object.keys(fields)
       .map((key, index) => `"${key}"=$${index + 1}`)
       .join(", ");
@@ -54,6 +54,21 @@ class UsersTable {
       `,
         Object.values(fields)
       );
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getUserById = async function (userId) {
+    try {
+      const {
+        rows: [user],
+      } = await this.client.query(`
+          SELECT * FROM users
+          WHERE "id"=${userId};
+        `);
 
       return user;
     } catch (error) {
