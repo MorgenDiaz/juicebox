@@ -3,6 +3,19 @@ class TagsTable {
     this.client = client;
   }
 
+  getAllTags = async function () {
+    try {
+      const { rows } = await this.client.query(`
+        SELECT *
+        FROM tags;
+      `);
+
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   createTags = async function (tagList) {
     if (tagList.length === 0) {
       return;

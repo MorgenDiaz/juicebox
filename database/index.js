@@ -5,6 +5,7 @@ const TagsTable = require("./table/tags.table");
 const PostTagsTable = require("./table/post_tags.table");
 const PostsDbModel = require("./model/posts.db.model");
 const UsersDbModel = require("./model/users.db.model");
+const TagsDbModel = require("./model/tags.db.model");
 
 const client = new Client("postgres://localhost:5432/juicebox-dev");
 
@@ -22,8 +23,11 @@ const postsDbModel = new PostsDbModel(
 
 const usersDbModel = new UsersDbModel(usersTable, postsTable, tagsTable);
 
+const tagsDbModel = new TagsDbModel(tagsTable);
+
 module.exports = {
   client,
   postsDbModel,
   usersDbModel,
+  tagsDbModel,
 };
