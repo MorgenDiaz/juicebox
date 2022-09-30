@@ -40,7 +40,7 @@ class UsersDbModel {
     return post;
   };
 
-  getUserById = async function (userId) {
+  getById = async function (userId) {
     try {
       const user = await this.usersTable.getUserById(userId);
 
@@ -55,6 +55,18 @@ class UsersDbModel {
       );
 
       user["posts"] = taggedUserPosts;
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getByName = async function (username) {
+    try {
+      const user = await this.usersTable.getUserByName(username);
+
+      if (!user) return null;
 
       return user;
     } catch (error) {

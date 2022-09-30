@@ -20,7 +20,7 @@ async function testUpdateUser(user) {
 async function testGetUserById(userId) {
   console.log("Test getUserById id: 2");
 
-  const user = await usersDbModel.getUserById(2);
+  const user = await usersDbModel.getById(2);
 
   console.log("Result: ", JSON.stringify(user, null, 4));
 }

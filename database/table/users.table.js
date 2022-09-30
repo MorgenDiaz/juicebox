@@ -65,10 +65,31 @@ class UsersTable {
     try {
       const {
         rows: [user],
-      } = await this.client.query(`
+      } = await this.client.query(
+        `
           SELECT * FROM users
-          WHERE "id"=${userId};
-        `);
+          WHERE "id"=$1;
+        `,
+        [userId]
+      );
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getUserByName = async function (username) {
+    try {
+      const {
+        rows: [user],
+      } = await this.client.query(
+        `
+          SELECT * FROM users
+          WHERE "username"=$1;
+        `,
+        [username]
+      );
 
       return user;
     } catch (error) {
