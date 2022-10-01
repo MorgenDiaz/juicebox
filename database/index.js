@@ -7,9 +7,14 @@ const PostsDbModel = require("./model/posts.db.model");
 const UsersDbModel = require("./model/users.db.model");
 const TagsDbModel = require("./model/tags.db.model");
 
-const client = new Client(
-  process.env.DATABASE_URL || "postgres://localhost:5432/juicebox-dev"
-);
+const client = new Client({
+  connectionString:
+    process.env.DATABASE_URL || "postgres://localhost:5432/juicebox-dev",
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : undefined,
+});
 
 const usersTable = new UsersTable(client);
 const postsTable = new PostsTable(client);
