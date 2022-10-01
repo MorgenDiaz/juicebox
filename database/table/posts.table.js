@@ -66,7 +66,7 @@ class PostsTable {
     return post;
   };
 
-  getPostById = async function getPostById(postId) {
+  getPostById = async function (postId) {
     try {
       const {
         rows: [post],
@@ -79,13 +79,20 @@ class PostsTable {
         [postId]
       );
 
+      if (!post) {
+        throw {
+          name: "PostNotFoundError",
+          message: "Could not find a post with that postId",
+        };
+      }
+
       return post;
     } catch (error) {
       throw error;
     }
   };
 
-  getPostsByUser = async function getPostById(userId) {
+  getPostsByUser = async function (userId) {
     try {
       const { rows } = await this.client.query(
         `

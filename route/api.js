@@ -1,5 +1,5 @@
 const express = require("express");
-const authenticateToken = require("./authentication");
+const { authenticateToken } = require("./authentication");
 const usersRouter = require("./users/users.route");
 const postsRouter = require("./posts/posts.route");
 const tagsRouter = require("./tags/tags.route");
