@@ -2,12 +2,12 @@
   "name": "juicebox",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "seed-dev": "nodemon ./database/seed/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "nodemon server.js",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
