@@ -80,8 +80,37 @@ async function register(req, res, next) {
   }
 }
 
+async function deleteUser(req, res, next) {
+  try {
+    const user = await usersDbModel.getById(req.params.userId);
+
+    if (user && user.id === req.user.id) {
+      const updatedUser = await usersDbModel.update(user.id, {
+        active: false,
+      });
+
+      res.send({ user: updatedUser });
+    } else {
+      next(
+        user
+          ? {
+              name: "UnauthorizedUserError",
+              message: "You cannot delete a user which is not yours",
+            }
+          : {
+              name: "UserNotFoundError",
+              message: "That user does not exist",
+            }
+      );
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+}
+
 module.exports = {
   getAllUsers,
   login,
   register,
+  deleteUser,
 };
