@@ -13,7 +13,6 @@ class PostsDbModel {
       const author = await this.usersTable.getUserById(post.authorId);
 
       delete author.password;
-      delete author.active;
       delete post.authorId;
 
       post.tags = tags;

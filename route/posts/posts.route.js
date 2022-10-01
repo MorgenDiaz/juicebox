@@ -1,5 +1,5 @@
 const express = require("express");
-const { requireUser } = require("../authentication");
+const { requireUser, requireActiveUser } = require("../authentication");
 const {
   getAllPosts,
   createPost,
@@ -10,8 +10,8 @@ const {
 const postsRouter = express.Router();
 
 postsRouter.get("/", getAllPosts);
-postsRouter.post("/", requireUser, createPost);
-postsRouter.patch("/:postId", requireUser, updatePost);
-postsRouter.delete("/:postId", requireUser, deletePost);
+postsRouter.post("/", requireUser, requireActiveUser, createPost);
+postsRouter.patch("/:postId", requireUser, requireActiveUser, updatePost);
+postsRouter.delete("/:postId", requireUser, requireActiveUser, deletePost);
 
 module.exports = postsRouter;

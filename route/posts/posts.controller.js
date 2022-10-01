@@ -8,7 +8,10 @@ async function getAllPosts(req, res) {
   const allPosts = await postsDbModel.getAll();
 
   const posts = allPosts.filter((post) => {
-    return post.active || (req.user && post.author.id === req.user.id);
+    return (
+      (post.active && post.author.active) ||
+      (req.user && post.author.id === req.user.id)
+    );
   });
 
   res.json(posts);

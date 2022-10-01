@@ -40,4 +40,15 @@ function requireUser(req, res, next) {
   next();
 }
 
-module.exports = { authenticateToken, requireUser };
+function requireActiveUser(req, res, next) {
+  if (!req.user.active) {
+    next({
+      name: "InactiveUserError",
+      message: "You must be logged with an active user to perform this action",
+    });
+  }
+
+  next();
+}
+
+module.exports = { authenticateToken, requireUser, requireActiveUser };
